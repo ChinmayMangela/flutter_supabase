@@ -10,7 +10,8 @@ class AuthTextField extends StatelessWidget {
     required this.hintText,
     required this.fieldName,
     required this.obscure,
-    this.togglePasswordState, required this.validator,
+    this.togglePasswordState,
+    required this.validator,
   });
 
   final TextEditingController controller;
@@ -26,18 +27,26 @@ class AuthTextField extends StatelessWidget {
       validator: validator,
       obscureText: obscure,
       controller: controller,
-      decoration: InputDecoration(hintText: hintText,
-        fillColor: AppColors.grey,
-        border: _buildBorder(),
-        enabledBorder: _buildBorder(),
+      decoration: InputDecoration(
+        hintText: hintText,
+        filled: true,
+        fillColor: AppColors.gray.withValues(alpha: 0.24),
+        border: _buildBorder(false),
+        focusedBorder: _buildBorder(true),
+        enabledBorder: _buildBorder(false),
         suffixIcon: _buildSuffixIcon(),
-        prefixIcon: _buildPrefixIcon()
+        prefixIcon: _buildPrefixIcon(),
       ),
     );
   }
 
-  OutlineInputBorder _buildBorder() {
-    return OutlineInputBorder(borderRadius: CustomRadius.buttonRadius);
+  OutlineInputBorder _buildBorder(bool isEnabled) {
+    return OutlineInputBorder(
+      borderRadius: CustomRadius.buttonRadius,
+      borderSide: isEnabled
+          ? BorderSide(color: AppColors.black, width: 1.3)
+          : BorderSide.none,
+    );
   }
 
   Widget? _buildSuffixIcon() {
@@ -52,9 +61,9 @@ class AuthTextField extends StatelessWidget {
   }
 
   Widget _buildPrefixIcon() {
-    if(fieldName == 'Email') {
+    if (fieldName == 'Email') {
       return Icon(AppIcons.auth.email);
-    } else if(fieldName == 'Password') {
+    } else if (fieldName == 'Password') {
       return Icon(AppIcons.auth.password);
     } else {
       return Icon(AppIcons.auth.name);

@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_supabase/core/constants/app_colors.dart';
+import 'package:flutter_supabase/core/utils/dimen.dart';
 
 class AppTheme {
   const AppTheme._();
@@ -15,7 +16,10 @@ class AppTheme {
 
   static ElevatedButtonThemeData get _elevatedButtonTheme => ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.lightGreen
+      backgroundColor: AppColors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: CustomRadius.buttonRadius
+      )
     )
   );
 }

@@ -3,6 +3,7 @@ import 'package:flutter_supabase/core/constants/app_colors.dart';
 import 'package:flutter_supabase/core/constants/app_strings.dart';
 import 'package:flutter_supabase/core/utils/dimen.dart';
 import 'package:flutter_supabase/core/utils/helper_functions.dart';
+import 'package:flutter_supabase/features/auth/presentation/widgets/auth_button.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/custom_description.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/custom_heading.dart';
@@ -18,6 +19,7 @@ class _SignInScreenState extends State<SignInScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   bool _obscurePassword = true;
+  final _formKey = GlobalKey<FormState>();
 
   void _togglePasswordState() {
     setState(() {
@@ -39,13 +41,19 @@ class _SignInScreenState extends State<SignInScreen> {
     _passwordController.dispose();
   }
 
-
   String? _validateEmail(String? value) {
     return HelperFunctions.emailValidator(value);
   }
 
   String? _validatePassword(String? value) {
     return HelperFunctions.passwordValidator(value);
+  }
+
+  void _onSignInTap() {
+    if (_formKey.currentState!.validate()) {
+      final email = _emailController.text.trim();
+      final password = _passwordController.text.trim();
+    }
   }
 
   @override
@@ -57,20 +65,29 @@ class _SignInScreenState extends State<SignInScreen> {
     final screenHeight = HelperFunctions.getScreenHeight(context);
     return Padding(
       padding: CustomPadding.screenPadding,
-      child: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildAppIcon(),
-              SizedBox(height: screenHeight * 0.05),
-              CustomHeading(heading: AppStrings.auth.signInHeading),
-              SizedBox(height: screenHeight * 0.01),
-              CustomDescription(description: AppStrings.auth.signInDescription),
-              _buildEmailField(),
-              SizedBox(height: screenHeight * 0.01),
-              _buildPasswordField(),
-            ],
+      child: Center(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildAppIcon(),
+                SizedBox(height: screenHeight * 0.05),
+                CustomHeading(heading: AppStrings.auth.signInHeading),
+                SizedBox(height: screenHeight * 0.01),
+                CustomDescription(
+                  description: AppStrings.auth.signInDescription,
+                ),
+                SizedBox(height: screenHeight * 0.05),
+                _buildEmailField(),
+                SizedBox(height: screenHeight * 0.01),
+                _buildPasswordField(),
+                SizedBox(height: screenHeight * 0.02),
+                _buildSignInButton()
+              ],
+            ),
           ),
         ),
       ),
@@ -106,6 +123,19 @@ class _SignInScreenState extends State<SignInScreen> {
       obscure: _obscurePassword,
       togglePasswordState: _togglePasswordState,
       validator: _validatePassword,
+    );
+  }
+
+  Widget _buildSignInButton() {
+    return AuthButton(
+      onTap: _onSignInTap,
+      child: Text(
+        AppStrings.auth.signInLabel,
+        style: TextThemes(context).labelMedium.copyWith(
+          color: AppColors.white,
+          fontWeight: TextWeight.w500,
+        ),
+      ),
     );
   }
 }

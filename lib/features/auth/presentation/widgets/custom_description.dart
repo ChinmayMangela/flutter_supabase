@@ -10,7 +10,7 @@ class CustomDescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(description, style: TextThemes(context).bodyMedium.copyWith(
-      color: AppColors.grey
+      color: AppColors.gray
     ),);
   }
 }
