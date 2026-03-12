@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_supabase/core/constants/app_strings.dart';
 import 'package:flutter_supabase/core/theme/app_theme.dart';
-import 'package:flutter_supabase/features/auth/presentation/screens/sign_in_screen.dart';
+import 'package:flutter_supabase/features/auth/presentation/screens/sign_in_and_sign_up.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       scaffoldMessengerKey: messengerKey,
       theme: AppTheme.theme,
-      home: SignInScreen(),
+      home: SignInAndSignUp(),
     ));
   }
 }

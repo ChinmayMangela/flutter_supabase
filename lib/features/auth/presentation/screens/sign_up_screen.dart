@@ -9,19 +9,22 @@ import 'package:flutter_supabase/features/auth/presentation/widgets/bottom_messa
 import 'package:flutter_supabase/features/auth/presentation/widgets/custom_description.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/custom_heading.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key, required this.signUpTap});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key, required this.signInTap});
 
-  final void Function() signUpTap;
+  final void Function() signInTap;
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
+  late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+  late TextEditingController _confirmPasswordController;
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = false;
   final _formKey = GlobalKey<FormState>();
 
   void _togglePasswordState() {
@@ -30,18 +33,32 @@ class _SignInScreenState extends State<SignInScreen> {
     });
   }
 
+  void _toggleConfirmPasswordState() {
+    setState(() {
+      _obscureConfirmPassword = !_obscureConfirmPassword;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _nameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
   }
 
   @override
   void dispose() {
     super.dispose();
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
+  }
+
+  String? _validateName(String? value) {
+    return HelperFunctions.nameValidator(value);
   }
 
   String? _validateEmail(String? value) {
@@ -52,10 +69,19 @@ class _SignInScreenState extends State<SignInScreen> {
     return HelperFunctions.passwordValidator(value);
   }
 
-  void _onSignInTap() {
+  String? _validateConfirmPassword(String? value) {
+    return HelperFunctions.confirmPasswordValidator(
+      value,
+      _passwordController.text.trim(),
+    );
+  }
+
+  void _onSignUpTap() {
     if (_formKey.currentState!.validate()) {
+      final name = _nameController.text.trim();
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
+      final confirmPassword = _confirmPasswordController.text.trim();
     }
   }
 
@@ -78,19 +104,23 @@ class _SignInScreenState extends State<SignInScreen> {
               children: [
                 _buildAppIcon(),
                 SizedBox(height: screenHeight * 0.05),
-                CustomHeading(heading: AppStrings.auth.signInHeading),
+                CustomHeading(heading: AppStrings.auth.signUpHeading),
                 SizedBox(height: screenHeight * 0.01),
                 CustomDescription(
-                  description: AppStrings.auth.signInDescription,
+                  description: AppStrings.auth.signUpDescription,
                 ),
                 SizedBox(height: screenHeight * 0.05),
+                _buildNameField(),
+                SizedBox(height: screenHeight * 0.01),
                 _buildEmailField(),
                 SizedBox(height: screenHeight * 0.01),
                 _buildPasswordField(),
+                SizedBox(height: screenHeight * 0.01),
+                _buildConfirmPasswordField(),
                 SizedBox(height: screenHeight * 0.02),
-                _buildSignInButton(),
+                _buildSignUpButton(),
                 SizedBox(height: screenHeight * 0.02),
-                _buildBottomMessage()
+                _buildBottomMessage(),
               ],
             ),
           ),
@@ -107,6 +137,16 @@ class _SignInScreenState extends State<SignInScreen> {
         color: AppColors.black,
       ),
       child: Image.asset('assets/images/app_icon.png', height: 30),
+    );
+  }
+
+  Widget _buildNameField() {
+    return AuthTextField(
+      controller: _nameController,
+      hintText: 'Name',
+      fieldName: 'Name',
+      obscure: false,
+      validator: _validateName,
     );
   }
 
@@ -131,11 +171,22 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Widget _buildSignInButton() {
+  Widget _buildConfirmPasswordField() {
+    return AuthTextField(
+      controller: _confirmPasswordController,
+      hintText: 'Confirm Password',
+      fieldName: 'Password',
+      obscure: _obscureConfirmPassword,
+      togglePasswordState: _toggleConfirmPasswordState,
+      validator: _validateConfirmPassword,
+    );
+  }
+
+  Widget _buildSignUpButton() {
     return AuthButton(
-      onTap: _onSignInTap,
+      onTap: _onSignUpTap,
       child: Text(
-        AppStrings.auth.signInLabel,
+        AppStrings.auth.signUpLabel,
         style: TextThemes(context).labelMedium.copyWith(
           color: AppColors.white,
           fontWeight: TextWeight.w500,
@@ -146,9 +197,9 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Widget _buildBottomMessage() {
     return BottomMessage(
-      bottomMessage: AppStrings.auth.signInBottomMessage,
-      authLabel: AppStrings.auth.signUpLabel,
-      onTap: widget.signUpTap,
+      bottomMessage: AppStrings.auth.signUpBottomMessage,
+      authLabel: AppStrings.auth.signInLabel,
+      onTap: widget.signInTap,
     );
   }
 }
