@@ -18,39 +18,39 @@ class TextWeight {
 }
 
 class TextThemes {
-  final BuildContext _context;
+  final BuildContext context;
 
-  TextThemes(this._context);
+  TextThemes(this.context);
 
-  TextStyle get bodySmall => Theme.of(_context).textTheme.bodySmall!;
+  TextStyle get bodySmall => Theme.of(context).textTheme.bodySmall!;
 
-  TextStyle get bodyMedium => Theme.of(_context).textTheme.bodyMedium!;
+  TextStyle get bodyMedium => Theme.of(context).textTheme.bodyMedium!;
 
-  TextStyle get bodyLarge => Theme.of(_context).textTheme.bodyLarge!;
+  TextStyle get bodyLarge => Theme.of(context).textTheme.bodyLarge!;
 
-  TextStyle get labelSmall => Theme.of(_context).textTheme.labelSmall!;
+  TextStyle get labelSmall => Theme.of(context).textTheme.labelSmall!;
 
-  TextStyle get labelMedium => Theme.of(_context).textTheme.labelMedium!;
+  TextStyle get labelMedium => Theme.of(context).textTheme.labelMedium!;
 
-  TextStyle get labelLarge => Theme.of(_context).textTheme.labelLarge!;
+  TextStyle get labelLarge => Theme.of(context).textTheme.labelLarge!;
 
-  TextStyle get headlineSmall => Theme.of(_context).textTheme.headlineSmall!;
+  TextStyle get headlineSmall => Theme.of(context).textTheme.headlineSmall!;
 
-  TextStyle get titleSmall => Theme.of(_context).textTheme.titleSmall!;
+  TextStyle get titleSmall => Theme.of(context).textTheme.titleSmall!;
 
-  TextStyle get titleMedium => Theme.of(_context).textTheme.titleMedium!;
+  TextStyle get titleMedium => Theme.of(context).textTheme.titleMedium!;
 
-  TextStyle get titleLarge => Theme.of(_context).textTheme.titleLarge!;
+  TextStyle get titleLarge => Theme.of(context).textTheme.titleLarge!;
 
-  TextStyle get headlineMedium => Theme.of(_context).textTheme.headlineMedium!;
+  TextStyle get headlineMedium => Theme.of(context).textTheme.headlineMedium!;
 
-  TextStyle get headlineLarge => Theme.of(_context).textTheme.headlineLarge!;
+  TextStyle get headlineLarge => Theme.of(context).textTheme.headlineLarge!;
 
-  TextStyle get displaySmall => Theme.of(_context).textTheme.displaySmall!;
+  TextStyle get displaySmall => Theme.of(context).textTheme.displaySmall!;
 
-  TextStyle get displayMedium => Theme.of(_context).textTheme.displayMedium!;
+  TextStyle get displayMedium => Theme.of(context).textTheme.displayMedium!;
 
-  TextStyle get displayLarge => Theme.of(_context).textTheme.displayLarge!;
+  TextStyle get displayLarge => Theme.of(context).textTheme.displayLarge!;
 }
 
 class CustomPadding {
