@@ -5,6 +5,7 @@ import 'package:flutter_supabase/core/utils/dimen.dart';
 import 'package:flutter_supabase/core/utils/helper_functions.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/auth_button.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:flutter_supabase/features/auth/presentation/widgets/bottom_message.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/custom_description.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/custom_heading.dart';
 
@@ -85,7 +86,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 SizedBox(height: screenHeight * 0.01),
                 _buildPasswordField(),
                 SizedBox(height: screenHeight * 0.02),
-                _buildSignInButton()
+                _buildSignInButton(),
+                SizedBox(height: screenHeight * 0.02),
+                _buildBottomMessage()
               ],
             ),
           ),
@@ -136,6 +139,14 @@ class _SignInScreenState extends State<SignInScreen> {
           fontWeight: TextWeight.w500,
         ),
       ),
+    );
+  }
+
+  Widget _buildBottomMessage() {
+    return BottomMessage(
+      bottomMessage: AppStrings.auth.signInBottomMessage,
+      authLabel: AppStrings.auth.signUpLabel,
+      onTap: () {},
     );
   }
 }
