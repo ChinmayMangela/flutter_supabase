@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_supabase/core/theme/app_theme.dart';
+import 'package:flutter_supabase/features/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:flutter_supabase/features/auth/presentation/screens/sign_in_and_sign_up.dart';
 
 void main() {
@@ -15,10 +16,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: MaterialApp(
+      routes: _routes,
       navigatorKey: navigatorKey,
       scaffoldMessengerKey: messengerKey,
       theme: AppTheme.theme,
       home: SignInAndSignUp(),
     ));
   }
+
+  Map<String, WidgetBuilder> get _routes => {
+    '/forgotPassword': (context) => ForgotPasswordScreen()
+  };
 }

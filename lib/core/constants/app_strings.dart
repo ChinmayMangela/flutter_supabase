@@ -19,4 +19,5 @@ class _Auth {
   final String signUpDescription = 'Start your health journey';
   final String signUpBottomMessage = 'Already have an account?';
   final String signUpLabel = 'Sign Up';
+  final String forgotPassword = 'Forgot Password';
 }

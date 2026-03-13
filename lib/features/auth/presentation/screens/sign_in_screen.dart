@@ -24,6 +24,10 @@ class _SignInScreenState extends State<SignInScreen> {
   bool _obscurePassword = true;
   final _formKey = GlobalKey<FormState>();
 
+  void _onForgotPasswordTap() {
+    Navigator.of(context).pushNamed('/forgotPassword');
+  }
+
   void _togglePasswordState() {
     setState(() {
       _obscurePassword = !_obscurePassword;
@@ -87,10 +91,17 @@ class _SignInScreenState extends State<SignInScreen> {
                 _buildEmailField(),
                 SizedBox(height: screenHeight * 0.01),
                 _buildPasswordField(),
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: screenHeight * 0.005),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    _buildForgotPasswordButton(),
+                  ],
+                ),
+                SizedBox(height: screenHeight * 0.005),
                 _buildSignInButton(),
                 SizedBox(height: screenHeight * 0.02),
-                _buildBottomMessage()
+                _buildBottomMessage(),
               ],
             ),
           ),
@@ -149,6 +160,13 @@ class _SignInScreenState extends State<SignInScreen> {
       bottomMessage: AppStrings.auth.signInBottomMessage,
       authLabel: AppStrings.auth.signUpLabel,
       onTap: widget.signUpTap,
+    );
+  }
+
+  Widget _buildForgotPasswordButton() {
+    return TextButton(
+      onPressed: _onForgotPasswordTap,
+      child: Text(AppStrings.auth.forgotPassword),
     );
   }
 }
