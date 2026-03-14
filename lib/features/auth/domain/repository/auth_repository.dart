@@ -20,5 +20,5 @@ abstract interface class AuthRepository {
 
   Future<Either<Failure, void>> sendPasswordResetMail({required String email});
 
-  Future<Either<Failure, EndUser>> getCurrentUserData();
+  Future<Either<Failure, EndUser?>> getCurrentUserData();
 }
