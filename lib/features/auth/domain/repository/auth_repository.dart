@@ -3,7 +3,7 @@ import 'package:flutter_supabase/features/auth/domain/entity/end_user.dart';
 import 'package:fpdart/fpdart.dart';
 
 abstract interface class AuthRepository {
-  Stream<EndUser> get userSession;
+  Stream<EndUser?> get userSession;
 
   Future<Either<Failure, EndUser>> signInWithEmail({
     required String email,

@@ -5,7 +5,6 @@ class EndUserModel extends EndUser {
     required super.id,
     required super.name,
     required super.email,
-    required super.password,
     required super.createdAt,
   });
 
@@ -14,7 +13,6 @@ class EndUserModel extends EndUser {
       id: json['id'],
       name: json['name'] as String? ?? 'unknown',
       email: json['email'] as String? ?? '',
-      password: json['password'],
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'] as String)
           : DateTime.now(),
@@ -26,7 +24,6 @@ class EndUserModel extends EndUser {
       'id': id,
       'name': name,
       'email': email,
-      'password': password,
       'created_at': createdAt.toIso8601String(),
     };
   }
