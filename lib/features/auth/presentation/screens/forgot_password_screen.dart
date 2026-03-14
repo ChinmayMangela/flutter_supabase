@@ -22,7 +22,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   void _onForgotPasswordTap() {
-    if(_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
       print(_emailController.text.trim());
     }
   }
@@ -42,12 +42,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          surfaceTintColor: Colors.transparent,
-          elevation: 0,
-          scrolledUnderElevation: 0,
-        ),
-        body: _buildBody());
+      appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
+      body: _buildBody(),
+    );
   }
 
   Widget _buildBody() {
@@ -57,14 +58,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       child: Center(
         child: SingleChildScrollView(
           child: Form(
-              key: _formKey,
-              child: Column(children: [
-            CustomHeading(heading: AppStrings.auth.forgotPassword),
-            SizedBox(height: height * 0.06),
-            _buildEmailField(),
-            SizedBox(height: height * 0.02),
-            _buildForgotPasswordButton()
-          ])),
+            key: _formKey,
+            child: Column(
+              children: [
+                CustomHeading(heading: AppStrings.auth.forgotPassword),
+                SizedBox(height: height * 0.06),
+                _buildEmailField(),
+                SizedBox(height: height * 0.02),
+                _buildForgotPasswordButton(),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -81,6 +85,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   Widget _buildForgotPasswordButton() {
-    return AuthButton(onTap: _onForgotPasswordTap, child: Text(AppStrings.auth.forgotPassword));
+    return AuthButton(
+      onTap: _onForgotPasswordTap,
+      child: Text(AppStrings.auth.forgotPassword),
+    );
   }
 }
