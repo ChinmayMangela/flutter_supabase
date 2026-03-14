@@ -33,3 +33,6 @@ class AuthSendResetPasswordEmailRequested extends AuthEvent {
 
   const AuthSendResetPasswordEmailRequested({required this.email});
 }
+
+
+class AuthStatusCheckRequested extends AuthEvent {}
