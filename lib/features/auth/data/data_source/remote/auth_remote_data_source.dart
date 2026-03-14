@@ -6,7 +6,7 @@ import 'package:flutter_supabase/features/auth/domain/exception/auth_exception_m
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class AuthRemoteDataSource {
-  Stream<EndUserModel?> get userStream;
+  Stream<EndUserModel?> get userSession;
 
   Future<EndUserModel> signInWithEmail({
     required String email,
@@ -32,7 +32,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   const AuthRemoteDataSourceImpl(this._client);
 
   @override
-  Stream<EndUserModel?> get userStream =>
+  Stream<EndUserModel?> get userSession =>
       _client.auth.onAuthStateChange.map((data) {
         final user = data.session?.user;
 
