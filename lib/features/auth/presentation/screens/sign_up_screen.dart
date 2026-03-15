@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_supabase/core/constants/app_colors.dart';
 import 'package:flutter_supabase/core/constants/app_strings.dart';
 import 'package:flutter_supabase/core/utils/dimen.dart';
 import 'package:flutter_supabase/core/utils/helper_functions.dart';
+import 'package:flutter_supabase/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_supabase/features/auth/presentation/bloc/auth_event.dart';
+import 'package:flutter_supabase/features/auth/presentation/bloc/auth_state.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/auth_button.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/bottom_message.dart';
@@ -81,16 +85,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final name = _nameController.text.trim();
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
-      final confirmPassword = _confirmPasswordController.text.trim();
+      context.read<AuthBloc>().add(
+        AuthSignUpRequested(name: name, email: email, password: password),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildBody());
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthSuccess) {
+          Navigator.of(
+            context,
+          ).pushNamedAndRemoveUntil('/home', (route) => false);
+        } else if (state is AuthFailure) {
+          HelperFunctions.showSnackBar(state.errorMessage);
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(body: _buildBody(state));
+      },
+    );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AuthState state) {
     final screenHeight = HelperFunctions.getScreenHeight(context);
     return Padding(
       padding: CustomPadding.screenPadding,
@@ -118,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: screenHeight * 0.01),
                 _buildConfirmPasswordField(),
                 SizedBox(height: screenHeight * 0.02),
-                _buildSignUpButton(),
+                _buildSignUpButton(state),
                 SizedBox(height: screenHeight * 0.02),
                 _buildBottomMessage(),
               ],
@@ -182,10 +201,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Widget _buildSignUpButton() {
+  Widget _buildSignUpButton(AuthState state) {
     return AuthButton(
       onTap: _onSignUpTap,
-      child: Text(
+      child: state is AuthLoading ? SizedBox(height: 25, width: 25, child: CircularProgressIndicator(
+        color: AppColors.white,
+      ),) : Text(
         AppStrings.auth.signUpLabel,
         style: TextThemes(context).labelMedium.copyWith(
           color: AppColors.white,

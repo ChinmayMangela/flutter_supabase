@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_supabase/core/theme/app_theme.dart';
 import 'package:flutter_supabase/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_supabase/features/auth/presentation/bloc/auth_event.dart';
+import 'package:flutter_supabase/features/auth/presentation/bloc/auth_state.dart';
 import 'package:flutter_supabase/features/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:flutter_supabase/features/auth/presentation/screens/sign_in_and_sign_up.dart';
+import 'package:flutter_supabase/features/home/presentation/screens/home_screen.dart';
 import 'package:flutter_supabase/init_dependencies.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,12 +37,19 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         scaffoldMessengerKey: messengerKey,
         theme: AppTheme.theme,
-        home: SignInAndSignUp(),
+        home: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+          if(state is AuthSuccess) {
+            return HomeScreen();
+          } else {
+            return SignInAndSignUp();
+          }
+        })
       ),
     );
   }
 
   Map<String, WidgetBuilder> get _routes => {
     '/forgotPassword': (context) => ForgotPasswordScreen(),
+    '/home': (context) => HomeScreen()
   };
 }

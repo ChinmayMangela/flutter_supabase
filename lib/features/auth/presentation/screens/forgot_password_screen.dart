@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_supabase/core/constants/app_colors.dart';
 import 'package:flutter_supabase/core/constants/app_strings.dart';
 import 'package:flutter_supabase/core/utils/dimen.dart';
 import 'package:flutter_supabase/core/utils/helper_functions.dart';
+import 'package:flutter_supabase/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_supabase/features/auth/presentation/bloc/auth_event.dart';
+import 'package:flutter_supabase/features/auth/presentation/bloc/auth_state.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/auth_button.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/custom_heading.dart';
@@ -23,7 +28,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   void _onForgotPasswordTap() {
     if (_formKey.currentState!.validate()) {
-      print(_emailController.text.trim());
+      final email = _emailController.text.trim();
+      context.read<AuthBloc>().add(
+        AuthSendResetPasswordEmailRequested(email: email),
+      );
     }
   }
 
@@ -47,11 +55,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         elevation: 0,
         scrolledUnderElevation: 0,
       ),
-      body: _buildBody(),
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is PasswordResetSuccess) {
+            HelperFunctions.showSnackBar(state.message);
+          } else if (state is PasswordResetFailure) {
+            HelperFunctions.showSnackBar(state.errorMessage);
+          }
+        },
+        builder: (context, state) {
+          return _buildBody(state);
+        },
+      ),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AuthState state) {
     final height = HelperFunctions.getScreenHeight(context);
     return Padding(
       padding: CustomPadding.screenPadding,
@@ -65,7 +84,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 SizedBox(height: height * 0.06),
                 _buildEmailField(),
                 SizedBox(height: height * 0.02),
-                _buildForgotPasswordButton(),
+                _buildForgotPasswordButton(state),
               ],
             ),
           ),
@@ -84,10 +103,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  Widget _buildForgotPasswordButton() {
+  Widget _buildForgotPasswordButton(AuthState state) {
     return AuthButton(
       onTap: _onForgotPasswordTap,
-      child: Text(AppStrings.auth.forgotPassword),
+      child: state is AuthLoading
+          ? SizedBox(height: 25, width: 25, child: CircularProgressIndicator(
+        color: AppColors.white,
+      ))
+          : Text(AppStrings.auth.forgotPassword),
     );
   }
 }

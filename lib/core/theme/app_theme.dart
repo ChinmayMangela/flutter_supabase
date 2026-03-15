@@ -12,7 +12,7 @@ class AppTheme {
     brightness: Brightness.light,
     scaffoldBackgroundColor: AppColors.white,
     elevatedButtonTheme: _elevatedButtonTheme,
-    textButtonTheme: _textButtonTheme
+    textButtonTheme: _textButtonTheme,
   );
 
   static ElevatedButtonThemeData get _elevatedButtonTheme => ElevatedButtonThemeData(

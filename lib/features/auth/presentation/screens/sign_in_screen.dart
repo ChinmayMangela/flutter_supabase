@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_supabase/core/constants/app_colors.dart';
 import 'package:flutter_supabase/core/constants/app_strings.dart';
 import 'package:flutter_supabase/core/utils/dimen.dart';
 import 'package:flutter_supabase/core/utils/helper_functions.dart';
+import 'package:flutter_supabase/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_supabase/features/auth/presentation/bloc/auth_event.dart';
+import 'package:flutter_supabase/features/auth/presentation/bloc/auth_state.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/auth_button.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/bottom_message.dart';
@@ -60,15 +64,31 @@ class _SignInScreenState extends State<SignInScreen> {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
+      context.read<AuthBloc>().add(
+        AuthSignInRequested(email: email, password: password),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildBody());
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthSuccess) {
+          Navigator.of(
+            context,
+          ).pushNamedAndRemoveUntil('/home', (route) => false);
+        } else if (state is AuthFailure) {
+          HelperFunctions.showSnackBar(state.errorMessage);
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(body: _buildBody(state));
+      },
+    );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(AuthState state) {
     final screenHeight = HelperFunctions.getScreenHeight(context);
     return Padding(
       padding: CustomPadding.screenPadding,
@@ -94,12 +114,10 @@ class _SignInScreenState extends State<SignInScreen> {
                 SizedBox(height: screenHeight * 0.005),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    _buildForgotPasswordButton(),
-                  ],
+                  children: [_buildForgotPasswordButton()],
                 ),
                 SizedBox(height: screenHeight * 0.005),
-                _buildSignInButton(),
+                _buildSignInButton(state),
                 SizedBox(height: screenHeight * 0.02),
                 _buildBottomMessage(),
               ],
@@ -142,16 +160,18 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  Widget _buildSignInButton() {
+  Widget _buildSignInButton(AuthState state) {
     return AuthButton(
       onTap: _onSignInTap,
-      child: Text(
-        AppStrings.auth.signInLabel,
-        style: TextThemes(context).labelMedium.copyWith(
-          color: AppColors.white,
-          fontWeight: TextWeight.w500,
-        ),
-      ),
+      child: state is AuthLoading
+          ? SizedBox(height: 25, width: 25, child: CircularProgressIndicator(color: AppColors.white,))
+          : Text(
+              AppStrings.auth.signInLabel,
+              style: TextThemes(context).labelMedium.copyWith(
+                color: AppColors.white,
+                fontWeight: TextWeight.w500,
+              ),
+            ),
     );
   }
 
