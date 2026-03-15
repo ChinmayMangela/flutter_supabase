@@ -5,6 +5,7 @@ class AppStrings {
   const AppStrings._();
 
   static const auth = _Auth();
+  static const home = _Home();
 }
 
 
@@ -20,4 +21,14 @@ class _Auth {
   final String signUpBottomMessage = 'Already have an account?';
   final String signUpLabel = 'Sign Up';
   final String forgotPassword = 'Forgot Password';
+}
+
+
+class _Home {
+  const _Home();
+
+  final String fridgeVisionHeading = 'Fridge Vision';
+  final String fridgeVisionDescription = 'Analyze fridge contents and\ngenerate recipe recommendations';
+  final String ingredientScannerHeading = 'Ingredient Scanner';
+  final String ingredientScannerDescription = 'Decode product labels and analyze nutritional composition';
 }

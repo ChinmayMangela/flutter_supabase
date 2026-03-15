@@ -58,6 +58,7 @@ class CustomPadding {
 
   static EdgeInsetsGeometry screenPadding = EdgeInsets.all(16);
   static EdgeInsetsGeometry iconPadding = EdgeInsets.all(19);
+  static EdgeInsetsGeometry cardPadding = EdgeInsets.all(20);
 }
 
 class CustomRadius {

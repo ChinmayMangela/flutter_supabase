@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_supabase/core/utils/dimen.dart';
+import 'package:flutter_supabase/core/utils/helper_functions.dart';
 import 'package:flutter_supabase/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_supabase/features/auth/presentation/bloc/auth_state.dart';
+import 'package:flutter_supabase/features/home/presentation/widgets/feature_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,10 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildBody() {
+    final screenHeight = HelperFunctions.getScreenHeight(context);
     return Padding(padding: CustomPadding.screenPadding, child: SingleChildScrollView(
       child: Column(
         children: [
-
+          FeatureCard(isFridgeVisionFeatureCard: true, onTap: () {}),
+          SizedBox(height: screenHeight * 0.03),
+          FeatureCard(isFridgeVisionFeatureCard: false, onTap: () {})
         ],
       ),
     ),);
