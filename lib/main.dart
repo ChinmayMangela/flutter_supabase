@@ -7,6 +7,7 @@ import 'package:flutter_supabase/features/auth/presentation/bloc/auth_state.dart
 import 'package:flutter_supabase/features/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:flutter_supabase/features/auth/presentation/screens/sign_in_and_sign_up.dart';
 import 'package:flutter_supabase/features/home/presentation/screens/home_screen.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/presentation/screens/camera_screen.dart';
 import 'package:flutter_supabase/init_dependencies.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
 
   Map<String, WidgetBuilder> get _routes => {
     '/forgotPassword': (context) => ForgotPasswordScreen(),
-    '/home': (context) => HomeScreen()
+    '/home': (context) => HomeScreen(),
+    '/ingredientScannerScreen': (context) => IngredientScanner()
   };
 }

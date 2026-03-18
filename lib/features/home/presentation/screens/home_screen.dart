@@ -37,7 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           FeatureCard(isFridgeVisionFeatureCard: true, onTap: () {}),
           SizedBox(height: screenHeight * 0.03),
-          FeatureCard(isFridgeVisionFeatureCard: false, onTap: () {})
+          FeatureCard(isFridgeVisionFeatureCard: false, onTap: () {
+            Navigator.of(context).pushNamed('/ingredientScannerScreen');
+          })
         ],
       ),
     ),);
