@@ -6,16 +6,27 @@ import 'package:flutter_supabase/core/constants/app_icons.dart';
 import 'package:flutter_supabase/core/constants/app_strings.dart';
 import 'package:flutter_supabase/core/utils/dimen.dart';
 import 'package:flutter_supabase/core/utils/helper_functions.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/presentation/screens/image_display_screen.dart';
 
 class IngredientScannerScreen extends StatefulWidget {
   const IngredientScannerScreen({super.key});
 
   @override
-  State<IngredientScannerScreen> createState() => _IngredientScannerScreenState();
+  State<IngredientScannerScreen> createState() =>
+      _IngredientScannerScreenState();
 }
 
 class _IngredientScannerScreenState extends State<IngredientScannerScreen> {
   final CameraController? controller = CameraService().controller;
+
+  void _onCaptureTap() async {
+    final XFile? image = await CameraService().takePicture();
+    if (image != null && mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => ImageDisplayScreen(image: image)),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +46,10 @@ class _IngredientScannerScreenState extends State<IngredientScannerScreen> {
           const SizedBox(height: 20),
           Text(
             "Waking up the lens...",
-            style: TextStyle(color: Colors.white.withOpacity(0.7), letterSpacing: 1.2),
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.7),
+              letterSpacing: 1.2,
+            ),
           ),
         ],
       ),
@@ -43,29 +57,13 @@ class _IngredientScannerScreenState extends State<IngredientScannerScreen> {
   }
 
   Widget _buildCameraPreview() {
-    final screenHeight = HelperFunctions.getScreenHeight(context);
-    final screenWidth = HelperFunctions.getScreenWidth(context);
     return Stack(
       children: [
         Positioned.fill(child: CameraPreview(controller!)),
-        Center(
-          child: Container(
-            height: screenHeight * 0.45,
-            width: screenWidth * 0.85,
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColors.white, width: 2),
-              borderRadius: BorderRadius.circular(24),
-            ),
-          ),
-        ),
-
         SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildInstructions(),
-              _buildBottomControls(),
-            ],
+            children: [_buildInstructions(), _buildBottomControls()],
           ),
         ),
       ],
@@ -92,8 +90,8 @@ class _IngredientScannerScreenState extends State<IngredientScannerScreen> {
             AppStrings.home.instructionsDescription,
             textAlign: TextAlign.center,
             style: TextThemes(context).bodyMedium.copyWith(
-              color: AppColors.white.withValues(alpha: 0.5)
-            )
+              color: AppColors.white.withValues(alpha: 0.5),
+            ),
           ),
         ],
       ),
@@ -123,8 +121,7 @@ class _IngredientScannerScreenState extends State<IngredientScannerScreen> {
 
   Widget _buildCaptureButton() {
     return GestureDetector(
-      onTap: () {
-      },
+      onTap: _onCaptureTap,
       child: Container(
         height: 85,
         width: 85,

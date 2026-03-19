@@ -37,7 +37,7 @@ class CameraService with WidgetsBindingObserver {
       // second parameter for the resolution
       controller = CameraController(
         cameras![0],
-        ResolutionPreset.medium,
+        ResolutionPreset.high,
         enableAudio: false,
       );
 
@@ -84,5 +84,23 @@ class CameraService with WidgetsBindingObserver {
     }
   }
 
+
+  Future<XFile?> takePicture() async {
+    try {
+      if(controller == null || !controller!.value.isInitialized) {
+        throw Exception("Camera has not initialized yet");
+      }
+
+      if(controller!.value.isTakingPicture) {
+        return null;
+      }
+
+      final XFile image = await controller!.takePicture();
+      return image;
+    } catch (e) {
+      debugPrint("Error capturing image: $e");
+      return null;
+    }
+  }
 
 }
