@@ -4,6 +4,7 @@ class AppIcons {
   AppIcons._();
 
   static final auth = _Auth();
+  static final home = _Home();
 }
 
 class _Auth {
@@ -14,4 +15,13 @@ class _Auth {
   final name = Icons.person_outlined;
   final  visibility = Icons.visibility;
   final  visibilityOff = Icons.visibility_off;
+}
+
+
+class _Home {
+  const _Home();
+
+  final flashOn = Icons.flash_on;
+  final flashOff = Icons.flash_off;
+  final galleryIcon = Icons.photo_library_sharp;
 }

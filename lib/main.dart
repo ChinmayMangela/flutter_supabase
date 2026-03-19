@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_supabase/core/common/service/camera_service.dart';
 import 'package:flutter_supabase/core/theme/app_theme.dart';
 import 'package:flutter_supabase/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_supabase/features/auth/presentation/bloc/auth_event.dart';
@@ -7,12 +8,14 @@ import 'package:flutter_supabase/features/auth/presentation/bloc/auth_state.dart
 import 'package:flutter_supabase/features/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:flutter_supabase/features/auth/presentation/screens/sign_in_and_sign_up.dart';
 import 'package:flutter_supabase/features/home/presentation/screens/home_screen.dart';
-import 'package:flutter_supabase/features/ingredient_scanner/presentation/screens/camera_screen.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/presentation/screens/ingredient_scanner_screen.dart';
 import 'package:flutter_supabase/init_dependencies.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialize camera BEFORE UI → removes delay when opening screen
+  await CameraService().init();
   await Supabase.initialize(
     url: 'https://fclyeyxmzvlohvbjuouc.supabase.co',
     anonKey:
@@ -27,8 +30,32 @@ void main() async {
 final navigatorKey = GlobalKey<NavigatorState>();
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+
+  @override
+  void initState() {
+    super.initState();
+    // Listen to app lifecycle (background/foreground)
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    CameraService().handleLifeCycle(state);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +79,6 @@ class MyApp extends StatelessWidget {
   Map<String, WidgetBuilder> get _routes => {
     '/forgotPassword': (context) => ForgotPasswordScreen(),
     '/home': (context) => HomeScreen(),
-    '/ingredientScannerScreen': (context) => IngredientScanner()
+    '/ingredientScannerScreen': (context) => IngredientScannerScreen()
   };
 }

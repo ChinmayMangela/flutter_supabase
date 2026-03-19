@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -67,15 +69,20 @@ class CameraService with WidgetsBindingObserver {
   Future<void> handleLifeCycle(AppLifecycleState state) async {
     try {
       if (controller == null) return;
-      if (state == AppLifecycleState.inactive) {
-        // App goes background → release camera
-        await disposeCamera();
+      if (state == AppLifecycleState.inactive ||
+          state == AppLifecycleState.paused) {
+        // DO NOTHING → keep camera instance alive
+        debugPrint("App inactive/paused → keeping camera alive");
       } else if (state == AppLifecycleState.resumed) {
-        // App returns → reinitialize camera
-        await init();
+        // Only reinitialize if controller got invalid
+        if (!controller!.value.isInitialized) {
+          await init();
+        }
       }
     } catch (e) {
       debugPrint("Lifecycle error: $e");
     }
   }
+
+
 }

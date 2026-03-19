@@ -31,4 +31,6 @@ class _Home {
   final String fridgeVisionDescription = 'Analyze fridge contents and\ngenerate recipe recommendations';
   final String ingredientScannerHeading = 'Ingredient Scanner';
   final String ingredientScannerDescription = 'Decode product labels and analyze nutritional composition';
+  final String instructionsHeading = 'Instructions';
+  final String instructionsDescription = 'Center the product ingredients within the frame, and\ntake a picture';
 }
