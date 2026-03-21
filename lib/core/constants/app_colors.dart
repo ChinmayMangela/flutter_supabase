@@ -8,4 +8,6 @@ class AppColors {
   static Color black = Color(0xFF000000);
   static Color gray = Color(0xFFD3D3D3);
   static Color lightGrey = Color(0xFFBAC1CA);
+  static Color cardGrayColor = Color(0xFFF9FAFB);
+  static Color backgroundGray = Color(0xFFFAFAFA);
 }

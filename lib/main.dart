@@ -8,6 +8,7 @@ import 'package:flutter_supabase/features/auth/presentation/bloc/auth_state.dart
 import 'package:flutter_supabase/features/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:flutter_supabase/features/auth/presentation/screens/sign_in_and_sign_up.dart';
 import 'package:flutter_supabase/features/home/presentation/screens/home_screen.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/presentation/screens/ingredient_analysis_screen.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/screens/ingredient_scanner_screen.dart';
 import 'package:flutter_supabase/init_dependencies.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
@@ -15,7 +16,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize camera BEFORE UI → removes delay when opening screen
-  await CameraService().init();
+  // await CameraService().init();
   await Supabase.initialize(
     url: 'https://fclyeyxmzvlohvbjuouc.supabase.co',
     anonKey:
@@ -30,48 +31,18 @@ void main() async {
 final navigatorKey = GlobalKey<NavigatorState>();
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-
-  @override
-  void initState() {
-    super.initState();
-    // Listen to app lifecycle (background/foreground)
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    CameraService().handleLifeCycle(state);
-  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: MaterialApp(
         routes: _routes,
-        navigatorKey: navigatorKey,
-        scaffoldMessengerKey: messengerKey,
-        theme: AppTheme.theme,
-        home: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-          if(state is AuthSuccess) {
-            return HomeScreen();
-          } else {
-            return SignInAndSignUp();
-          }
-        })
+          navigatorKey: navigatorKey,
+          scaffoldMessengerKey: messengerKey,
+          theme: AppTheme.theme,
+        home: IngredientAnalysisScreen(),
       ),
     );
   }
@@ -82,3 +53,57 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     '/ingredientScannerScreen': (context) => IngredientScannerScreen()
   };
 }
+
+
+// class MyApp extends StatefulWidget {
+//   const MyApp({super.key});
+//
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
+//
+// class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     // Listen to app lifecycle (background/foreground)
+//     WidgetsBinding.instance.addObserver(this);
+//   }
+//
+//   @override
+//   void dispose() {
+//     WidgetsBinding.instance.removeObserver(this);
+//     super.dispose();
+//   }
+//
+//   @override
+//   void didChangeAppLifecycleState(AppLifecycleState state) {
+//     CameraService().handleLifeCycle(state);
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//       child: MaterialApp(
+//         routes: _routes,
+//         navigatorKey: navigatorKey,
+//         scaffoldMessengerKey: messengerKey,
+//         theme: AppTheme.theme,
+//         home: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+//           if(state is AuthSuccess) {
+//             return HomeScreen();
+//           } else {
+//             return SignInAndSignUp();
+//           }
+//         })
+//       ),
+//     );
+//   }
+//
+//   Map<String, WidgetBuilder> get _routes => {
+//     '/forgotPassword': (context) => ForgotPasswordScreen(),
+//     '/home': (context) => HomeScreen(),
+//     '/ingredientScannerScreen': (context) => IngredientScannerScreen()
+//   };
+// }

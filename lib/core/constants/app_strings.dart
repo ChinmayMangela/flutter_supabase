@@ -33,4 +33,7 @@ class _Home {
   final String ingredientScannerDescription = 'Decode product labels and analyze nutritional composition';
   final String instructionsHeading = 'Instructions';
   final String instructionsDescription = 'Center the product ingredients within the frame, and\ntake a picture';
+  final String healthScoreHeading = 'Health Score';
+  final String healthScoreDescription = 'Overall product rating';
+  final String dummyText = ' This product contains concerning ingredients that may negatively impact your health.';
 }
