@@ -24,4 +24,6 @@ class _Home {
   final flashOn = Icons.flash_on;
   final flashOff = Icons.flash_off;
   final galleryIcon = Icons.photo_library_sharp;
+  final warning = Icons.warning_amber_outlined;
 }
+
