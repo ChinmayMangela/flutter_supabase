@@ -40,12 +40,12 @@ class _HealthScoreComponentState extends State<HealthScoreComponent> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(AppStrings.home.healthScoreHeading, style: TextThemes(context).headlineMedium.copyWith(
+        Text(AppStrings.ingredientScanner.healthScoreHeading, style: TextThemes(context).headlineMedium.copyWith(
           fontWeight: TextWeight.w900
         ),),
         const SizedBox(height: 5),
-        Text(AppStrings.home.healthScoreDescription, style: TextThemes(context).bodyMedium.copyWith(
-          color: AppColors.gray.withValues(alpha: 2.9)
+        Text(AppStrings.ingredientScanner.healthScoreDescription, style: TextThemes(context).bodyMedium.copyWith(
+          color: AppColors.greyColor
         ),),
       ],
     );

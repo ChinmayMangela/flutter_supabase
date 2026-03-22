@@ -10,4 +10,5 @@ class AppColors {
   static Color lightGrey = Color(0xFFBAC1CA);
   static Color cardGrayColor = Color(0xFFF9FAFB);
   static Color backgroundGray = Color(0xFFFAFAFA);
+  static Color greyColor = Colors.grey;
 }

@@ -6,6 +6,7 @@ class AppStrings {
 
   static const auth = _Auth();
   static const home = _Home();
+  static const ingredientScanner = _IngredientScanner();
 }
 
 
@@ -31,9 +32,15 @@ class _Home {
   final String fridgeVisionDescription = 'Analyze fridge contents and\ngenerate recipe recommendations';
   final String ingredientScannerHeading = 'Ingredient Scanner';
   final String ingredientScannerDescription = 'Decode product labels and analyze nutritional composition';
+}
+
+class _IngredientScanner {
+  const _IngredientScanner();
+
   final String instructionsHeading = 'Instructions';
   final String instructionsDescription = 'Center the product ingredients within the frame, and\ntake a picture';
   final String healthScoreHeading = 'Health Score';
   final String healthScoreDescription = 'Overall product rating';
-  final String dummyText = ' This product contains concerning ingredients that may negatively impact your health.';
+  final String dummyText = 'This product contains concerning ingredients that may negatively impact your health.';
+  final String nutritionalFactsHeading = 'Nutritional Facts';
 }

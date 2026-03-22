@@ -76,7 +76,7 @@ class _IngredientScannerScreenState extends State<IngredientScannerScreen> {
       child: Column(
         children: [
           Text(
-            AppStrings.home.instructionsHeading.toUpperCase(),
+            AppStrings.ingredientScanner.instructionsHeading.toUpperCase(),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppColors.white,
@@ -87,7 +87,7 @@ class _IngredientScannerScreenState extends State<IngredientScannerScreen> {
           ),
           const SizedBox(height: 8),
           Text(
-            AppStrings.home.instructionsDescription,
+            AppStrings.ingredientScanner.instructionsDescription,
             textAlign: TextAlign.center,
             style: TextThemes(context).bodyMedium.copyWith(
               color: AppColors.white.withValues(alpha: 0.5),

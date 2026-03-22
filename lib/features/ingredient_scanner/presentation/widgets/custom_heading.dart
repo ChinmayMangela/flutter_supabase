@@ -8,11 +8,8 @@ class CustomHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      heading,
-      style: TextThemes(
-        context,
-      ).headlineSmall.copyWith(fontWeight: TextWeight.w900),
-    );
+    return Text(heading, style: TextThemes(context).headlineSmall.copyWith(
+      fontWeight: TextWeight.w900
+    ),);
   }
 }
