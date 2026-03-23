@@ -11,6 +11,7 @@ import 'package:flutter_supabase/features/ingredient_scanner/data/remote/ingredi
 import 'package:flutter_supabase/features/ingredient_scanner/data/repository/ingredient_scanner_repository_impl.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/domain/repository/ingredient_scanner_repository.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/domain/use_case/scan_ingredients.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/presentation/bloc/ingredient_scanner_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -44,6 +45,12 @@ Future<void> initDependencies() async {
 
   serviceLocator.registerLazySingleton(
     () => ScanIngredients(serviceLocator<IngredientScannerRepository>()),
+  );
+
+  serviceLocator.registerFactory(
+    () => IngredientScannerBloc(
+      scanIngredients: serviceLocator<ScanIngredients>(),
+    ),
   );
 }
 
