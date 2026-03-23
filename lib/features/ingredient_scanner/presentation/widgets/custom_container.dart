@@ -4,9 +4,14 @@ import 'package:flutter_supabase/core/utils/dimen.dart';
 import 'package:flutter_supabase/core/utils/helper_functions.dart';
 
 class CustomContainer extends StatelessWidget {
-  const CustomContainer({super.key, required this.child});
+  const CustomContainer({
+    super.key,
+    required this.child,
+    this.color = Colors.white,
+  });
 
   final Widget child;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +20,16 @@ class CustomContainer extends StatelessWidget {
       padding: CustomPadding.cardPadding,
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.black.withValues(alpha: 0.08)),
-        color: AppColors.white,
+        color: color,
         borderRadius: CustomRadius.buttonRadius,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.07),
-              blurRadius: 20,
-              spreadRadius: 0,
-              offset: const Offset(0, 10),
-            ),
-          ],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.07),
+            blurRadius: 20,
+            spreadRadius: 0,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: child,
     );

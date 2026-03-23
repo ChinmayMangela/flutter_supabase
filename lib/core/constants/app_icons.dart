@@ -26,5 +26,8 @@ class _Home {
   final galleryIcon = Icons.photo_library_sharp;
   final warning = Icons.warning_amber_outlined;
   final bolt = Icons.bolt_outlined;
+  final aiIcon = Icons.auto_awesome;
+  final bulletPoint = Icons.fiber_manual_record;
+  final shield = Icons.shield_outlined;
 }
 

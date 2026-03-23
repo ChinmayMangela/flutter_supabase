@@ -45,4 +45,6 @@ class _IngredientScanner {
   final String nutritionalFactsHeading = 'Nutritional Facts';
   final String immediateHealthImpactHeading = 'Immediate Health Impact';
   final String redFlagIngredientsHeading = 'Red Flag Ingredients';
+  final String aiDeepAnalysisHeading = 'AI Deep Analysis';
+  final String healthierAlternativesHeading = 'Healthier Alternatives';
 }
