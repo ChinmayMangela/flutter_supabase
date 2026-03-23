@@ -25,4 +25,4 @@ class RedFlagIngredient extends Equatable {
   ];
 }
 
-enum RiskLevel { low, medium, high }
+enum RiskLevel { low, medium, high, unknown}
