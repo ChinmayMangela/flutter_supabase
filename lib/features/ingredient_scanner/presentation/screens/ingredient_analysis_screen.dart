@@ -5,6 +5,7 @@ import 'package:flutter_supabase/core/utils/helper_functions.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/health_score_component.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/immediate_health_impact_component.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/nutritional_facts_component.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/red_flag_ingredients_component.dart';
 
 class IngredientAnalysisScreen extends StatefulWidget {
   const IngredientAnalysisScreen({super.key});
@@ -30,6 +31,37 @@ class _IngredientAnalysisScreenState extends State<IngredientAnalysisScreen> {
     {'impact_label': 'Weakened Immunity', 'impact_description': 'High sugar intake suppresses immune system for hours'},
   ];
 
+  final List<Map<String, String>> _redFlagIngredients = [
+    {
+      'ingredient_name': 'High Fructose Corn Syrup',
+      'risk_level': 'High Risk',
+      'primary_health_impact': 'Linked to obesity and diabetes',
+      'clinical_mechanism': 'Metabolic Dysfunction',
+      'detailed_description': 'This highly processed sweetener bypasses normal metabolic regulation, leading to increased fat storage and insulin resistance. Studies show a strong correlation with type 2 diabetes and non-alcoholic fatty liver disease.',
+    },
+    {
+      'ingredient_name': 'Palm Oil',
+      'risk_level': 'Medium Risk',
+      'primary_health_impact': 'High in saturated fats, environmental concerns',
+      'clinical_mechanism': 'Cardiovascular Risk',
+      'detailed_description': 'Contains 50% saturated fat which can raise LDL cholesterol levels. Mass production contributes to deforestation and habitat destruction. Consider alternatives like olive or avocado oil.',
+    },
+    {
+      'ingredient_name': 'Artificial Colors (Red 40)',
+      'risk_level': 'High Risk',
+      'primary_health_impact': 'Potential behavioral issues in children',
+      'clinical_mechanism': 'Neurotoxicity',
+      'detailed_description': 'Petroleum-based synthetic dye linked to hyperactivity, attention problems, and allergic reactions. Banned in several European countries. May contain carcinogenic contaminants from manufacturing.',
+    },
+    {
+      'ingredient_name': 'Sodium Benzoate',
+      'risk_level': 'Medium Risk',
+      'primary_health_impact': 'May form benzene when combined with vitamin C',
+      'clinical_mechanism': 'Carcinogenic Potential',
+      'detailed_description': 'When combined with ascorbic acid (vitamin C) in acidic conditions, can form benzene - a known carcinogen. Also linked to DNA damage and mitochondrial dysfunction in cells.',
+    },
+  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +77,9 @@ class _IngredientAnalysisScreenState extends State<IngredientAnalysisScreen> {
         SizedBox(height: screenHeight * 0.02),
         _buildNutritionalFactsComponent(),
         SizedBox(height: screenHeight * 0.02),
-        _buildImmediateHealthImpactsComponent()
+        _buildImmediateHealthImpactsComponent(),
+        SizedBox(height: screenHeight * 0.02),
+        _buildRedFlagIngredientsComponent()
       ])),
     );
   }
@@ -60,5 +94,9 @@ class _IngredientAnalysisScreenState extends State<IngredientAnalysisScreen> {
 
   Widget _buildImmediateHealthImpactsComponent() {
     return ImmediateHealthImpactComponent(healthImpact: _healthImpact);
+  }
+
+  Widget _buildRedFlagIngredientsComponent() {
+    return RedFlagIngredientsComponent(redFlagIngredients: _redFlagIngredients,);
   }
 }

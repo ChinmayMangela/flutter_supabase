@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_supabase/core/constants/app_colors.dart';
 import 'package:flutter_supabase/core/utils/dimen.dart';
+import 'package:flutter_supabase/core/utils/helper_functions.dart';
 
 class CustomContainer extends StatelessWidget {
   const CustomContainer({super.key, required this.child});
@@ -10,6 +11,7 @@ class CustomContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: HelperFunctions.getScreenWidth(context),
       padding: CustomPadding.cardPadding,
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.black.withValues(alpha: 0.08)),

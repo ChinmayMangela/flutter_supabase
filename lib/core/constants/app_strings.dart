@@ -44,4 +44,5 @@ class _IngredientScanner {
   final String dummyText = 'This product contains concerning ingredients that may negatively impact your health.';
   final String nutritionalFactsHeading = 'Nutritional Facts';
   final String immediateHealthImpactHeading = 'Immediate Health Impact';
+  final String redFlagIngredientsHeading = 'Red Flag Ingredients';
 }
