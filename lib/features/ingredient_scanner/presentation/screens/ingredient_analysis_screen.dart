@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_supabase/core/constants/app_strings.dart';
 import 'package:flutter_supabase/core/utils/dimen.dart';
 import 'package:flutter_supabase/core/utils/helper_functions.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/domain/entity/health_analysis.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/ai_deep_analysis_component.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/health_score_component.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/immediate_health_impact_component.dart';
@@ -9,7 +10,9 @@ import 'package:flutter_supabase/features/ingredient_scanner/presentation/widget
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/red_flag_ingredients_component.dart';
 
 class IngredientAnalysisScreen extends StatefulWidget {
-  const IngredientAnalysisScreen({super.key});
+  const IngredientAnalysisScreen({super.key, required this.healthAnalysis});
+
+  final HealthAnalysis healthAnalysis;
 
   @override
   State<IngredientAnalysisScreen> createState() =>

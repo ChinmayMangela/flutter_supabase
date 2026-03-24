@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/data/model/health_analysis_model.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/domain/exceptions/ingredient_scanner_exception_mapper.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 abstract interface class IngredientScannerRemoteDataSource {
@@ -90,11 +92,11 @@ JSON Schema Template:
 
 
     } on FormatException catch (e) {
-      throw Exception('Failed to parse nutrition data: ${e.message}');
+      throw IngredientScannerExceptionMapper.mapIngredientParsingException(e);
     } on SocketException catch (e) {
-      throw Exception('Network issue, try to connect to the internet');
+      throw IngredientScannerExceptionMapper.mapSocketException(e);
     } catch (e) {
-      throw Exception('An error occurred during scanning: $e');
+      throw IngredientScannerExceptionMapper.mapGenericException(e);
     }
   }
 

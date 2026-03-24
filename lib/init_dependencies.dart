@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_supabase/features/auth/data/data_source/remote/auth_remote_data_source.dart';
 import 'package:flutter_supabase/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:flutter_supabase/features/auth/domain/repository/auth_repository.dart';
@@ -24,10 +25,12 @@ Future<void> initDependencies() async {
   );
   await _initAuth();
 
+  final String geminiApiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
   serviceLocator.registerLazySingleton<GenerativeModel>(
     () => GenerativeModel(
-      model: 'gemini-1.5-flash',
-      apiKey: 'AIzaSyAOPLxJKoVFqQGjUmB4jp1cv9FJpN8Pw6k',
+      model: 'gemini-flash-latest',
+      apiKey: geminiApiKey,
+
     ),
   );
 
