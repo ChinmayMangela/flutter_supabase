@@ -3,6 +3,7 @@ import 'package:flutter_supabase/core/constants/app_colors.dart';
 import 'package:flutter_supabase/core/constants/app_strings.dart';
 import 'package:flutter_supabase/core/utils/dimen.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/custom_heading.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/domain/entity/nutritional_fact.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/custom_container.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/nutrition_card.dart';
 
@@ -10,11 +11,11 @@ class NutritionalFactsComponent extends StatelessWidget {
   const NutritionalFactsComponent({
     super.key,
     required this.quantity,
-    required this.nutrients,
+    required this.facts,
   });
 
   final String quantity;
-  final List<Map<String, String>> nutrients;
+  final List<NutritionalFact> facts;
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +47,11 @@ class NutritionalFactsComponent extends StatelessWidget {
         crossAxisSpacing: 13,
         mainAxisSpacing: 13
       ),
-      itemCount: nutrients.length,
+      itemCount: facts.length,
       itemBuilder: (context, index) {
         return NutritionCard(
-          label: nutrients[index]["label"] ?? '',
-          value: nutrients[index]['value'] ?? '',
+          label: facts[index].label,
+          value: facts[index].value,
         );
       },
     );

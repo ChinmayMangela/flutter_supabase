@@ -20,13 +20,17 @@ class NutritionCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(value, style: TextThemes(context).headlineMedium.copyWith(
-            fontWeight: TextWeight.w900
-          ),),
+          Expanded(
+            child: Text(value, style: TextThemes(context).headlineSmall.copyWith(
+              fontWeight: TextWeight.w900
+            ),),
+          ),
           const SizedBox(height: 6),
-          Text(label, style: TextThemes(context).bodyMedium.copyWith(
-            color: AppColors.black.withValues(alpha: 0.4)
-          ),)
+          Expanded(
+            child: Text(label, style: TextThemes(context).bodyMedium.copyWith(
+              color: AppColors.black.withValues(alpha: 0.4)
+            ),),
+          )
         ],
       ),
     );

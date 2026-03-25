@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_supabase/core/constants/app_strings.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/domain/entity/immediate_health_impact.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/custom_container.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/custom_heading.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/widgets/health_impact_tile.dart';
 
 class ImmediateHealthImpactComponent extends StatelessWidget {
-  const ImmediateHealthImpactComponent({super.key, required this.healthImpact});
+  const ImmediateHealthImpactComponent({super.key, required this.healthImpacts});
 
-  final List<Map<String, String>> healthImpact;
+  final List<ImmediateHealthImpact> healthImpacts;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,12 @@ class ImmediateHealthImpactComponent extends StatelessWidget {
             shrinkWrap: true,
             itemBuilder: (context, index) {
               return HealthImpactTile(
-                impactTitle: healthImpact[index]['impact_label'] ?? '',
+                impactTitle: healthImpacts[index].impactLabel,
                 impactDescription:
-                    healthImpact[index]['impact_description'] ?? '',
+                    healthImpacts[index].impactDescription,
               );
             },
-            itemCount: healthImpact.length,
+            itemCount: healthImpacts.length,
           ),
         ],
       ),

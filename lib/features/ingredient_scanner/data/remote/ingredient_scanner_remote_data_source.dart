@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/data/model/health_analysis_model.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/domain/exceptions/ingredient_scanner_exception_mapper.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:image/image.dart' as img;
 
 abstract interface class IngredientScannerRemoteDataSource {
   Future<HealthAnalysisModel> scanIngredients(XFile file);
@@ -13,30 +13,65 @@ abstract interface class IngredientScannerRemoteDataSource {
 
 class IngredientScannerRemoteDataSourceImpl
     implements IngredientScannerRemoteDataSource {
-
   const IngredientScannerRemoteDataSourceImpl(this.model);
 
   final GenerativeModel model;
 
-  static const String _systemPrompt = r'''
-Role: You are an expert Clinical Nutritionist and Food Scientist with 20 years of experience in toxicology and metabolic health.
-Task: Analyze the provided food packaging image. Your goal is to identify all ingredients and nutritional values to provide a deep health impact analysis.
-Output Format: You must respond STRICTLY in JSON format. Do not include any conversational text before or after the JSON.
-Data Requirements:
-Health Score: Provide a rating (0.0 to 10.0) and a health_description summarizing the overall impact.
-Nutritional Facts: Extract the product quantity and quantity_measure. Provide a list called facts containing { "label": "name", "value": "amount" }.
-Immediate Health Impact: List exactly 3-4 short-term physiological effects (e.g., Blood Sugar Spike, Dopamine Hit, Dehydration).
-Red Flag Ingredients: For every harmful additive (Preservatives, Artificial Colors, High Fructose Corn Syrup, Inflammatory Oils):
-State the ingredient_name.
-Provide a primary_health_impact in short.
-Detail the specific clinical_mechanism and a 4-5 sentence description as detailed_description.
-Assign a risk_level (High, Medium, or Low).
-AI Deep Analysis: Provide a professional summary of the product's processing level (using the NOVA scale logic) and hidden health risks.
-Healthier Alternatives: List 4 specific, healthier food swaps.
-JSON Schema Template:
+  // FINAL SCHEMA
+  static final _fullSchema = Schema.object(
+    properties: {
+      "health_score": Schema.object(
+        properties: {
+          "rating": Schema.number(),
+          "health_description": Schema.string(),
+        },
+      ),
+      "nutritional_facts": Schema.object(
+        properties: {
+          "product_quantity": Schema.number(),
+          "quantity_measure": Schema.string(),
+          "facts": Schema.array(
+            items: Schema.object(
+              properties: {"label": Schema.string(), "value": Schema.string()},
+            ),
+          ),
+        },
+      ),
+      "immediate_health_impact": Schema.array(
+        items: Schema.object(
+          properties: {
+            "impact_label": Schema.string(),
+            "impact_description": Schema.string(),
+          },
+        ),
+      ),
+      "red_flag_ingredients": Schema.array(
+        items: Schema.object(
+          properties: {
+            "ingredient_name": Schema.string(),
+            "primary_health_impact": Schema.string(),
+            "clinical_mechanism": Schema.string(),
+            "detailed_description": Schema.string(),
+            "risk_level": Schema.string(),
+          },
+        ),
+      ),
+      "ai_deep_analysis": Schema.string(),
+      "healthier_alternatives": Schema.array(items: Schema.string()),
+    },
+  );
+
+  String _buildAnalysisPrompt() {
+    return '''
+You are an expert Clinical Nutritionist and Food Scientist.
+
+TASK:
+Analyze the provided nutritional facts and generate a full health report.
+
+Return STRICT JSON in this structure:
 {
   "health_score": { "rating": 0.0, "health_description": "" },
-  "nutritional_facts": {
+   "nutritional_facts": {
     "product_quantity": 0,
     "quantity_measure": "",
     "facts": [ { "label": "", "value": "" } ]
@@ -56,41 +91,50 @@ JSON Schema Template:
   "ai_deep_analysis": "",
   "healthier_alternatives": []
 }
+
+Rules:
+- 3 immediate impacts
+- 4 nutrition facts
+- max 2 red flags
+- short descriptions
+- 4 alternatives
+- JSON only
 ''';
+  }
+  /*
+  - immediate_health_impact: EXACTLY 3 items
+- nutritional_facts: facts: only returns 4 important facts
+- red_flag_ingredients: MAX 2 items
+- descriptions: max 20 words
+- ai_deep_analysis: max 40 words
+- healthier_alternatives: EXACTLY 4 items
+- Return ONLY valid JSON
+   */
 
   @override
   Future<HealthAnalysisModel> scanIngredients(XFile file) async {
     try {
-      final imageBytes = await file.readAsBytes();
-      final textPart = TextPart(_systemPrompt);
-      final imagePart = DataPart('image/jpeg', imageBytes);
-      final content = [
-        Content.multi([
-          textPart,
-          imagePart
-        ])
-      ];
+      final compressedBytes = await _compressImage(file);
+      final prompt = _buildAnalysisPrompt();
+      final imagePart = DataPart('image/jpeg', compressedBytes);
+      final response = await model.generateContent(
+        [
+          Content.multi([TextPart(prompt), imagePart]),
+        ],
+        generationConfig: GenerationConfig(
+          responseMimeType: 'application/json',
+          // responseSchema: _fullSchema,
+        ),
+      );
 
-      final response = await model.generateContent(content, generationConfig: GenerationConfig(
-        responseMimeType: 'application/json'
-      ));
+      final textResponse = response.text;
 
-      final responseText = response.text;
-
-      if (responseText == null || responseText.isEmpty) {
-        throw Exception('The model returned an empty response.');
+      if (textResponse == null || textResponse.isEmpty) {
+        throw Exception("Scanning failed");
       }
 
-      final cleanJson = responseText
-          .replaceFirst(RegExp(r'^```json'), '')
-          .replaceFirst(RegExp(r'```$'), '')
-          .trim();
-
-      final Map<String, dynamic> data = jsonDecode(cleanJson);
-
+      final data = jsonDecode(response.text!);
       return HealthAnalysisModel.fromJson(data);
-
-
     } on FormatException catch (e) {
       throw IngredientScannerExceptionMapper.mapIngredientParsingException(e);
     } on SocketException catch (e) {
@@ -100,4 +144,31 @@ JSON Schema Template:
     }
   }
 
+  Future<Uint8List> _compressImage(XFile file) async {
+    // STEP 1: Read original image bytes
+    final bytes = await file.readAsBytes();
+
+    // STEP 2: Decode image
+    final image = img.decodeImage(bytes);
+    if (image == null) {
+      throw Exception("Invalid image format");
+    }
+
+    // STEP 3: Resize image
+    final resizedImage = img.copyResize(
+      image,
+      width: 512,
+    );
+
+    // STEP 4: Compress to JPEG
+    final compressedList = img.encodeJpg(
+      resizedImage,
+      quality: 70,
+    );
+
+    // STEP 5: Convert List<int> → Uint8List
+    final compressedBytes = Uint8List.fromList(compressedList);
+
+    return compressedBytes;
+  }
 }

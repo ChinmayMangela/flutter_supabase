@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_supabase/core/constants/app_icons.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/domain/entity/red_flag_ingredient.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/dimen.dart';
@@ -15,7 +16,7 @@ class RedFlagIngredientCard extends StatelessWidget {
   });
 
   final String ingredientName;
-  final String riskLevel;
+  final RiskLevel riskLevel;
   final String primaryHealthImpact;
   final String clinicalMechanism;
   final String detailedDescription;
@@ -64,7 +65,7 @@ class RedFlagIngredientCard extends StatelessWidget {
             color: AppColors.black,
           ),
           child: Text(
-            riskLevel,
+            riskLevel.name,
             style: TextThemes(
               context,
             ).labelSmall.copyWith(color: AppColors.white),
@@ -85,13 +86,23 @@ class RedFlagIngredientCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(AppIcons.home.bolt, color: AppColors.black,),
-              Text(clinicalMechanism, style: TextThemes(context).bodyMedium.copyWith(
-                fontWeight: TextWeight.w500
-              ),)
+              Icon(AppIcons.home.bolt, color: AppColors.black),
+
+              const SizedBox(width: 6),
+
+              Expanded(
+                child: Text(
+                  clinicalMechanism,
+                  style: TextThemes(context).bodyMedium.copyWith(
+                    fontWeight: TextWeight.w500,
+                  ),
+                ),
+              ),
             ],
           ),
+
           const SizedBox(height: 5),
           Text(detailedDescription, style: TextThemes(context).labelMedium.copyWith(
             color: AppColors.greyColor

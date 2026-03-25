@@ -37,7 +37,7 @@ class CameraService with WidgetsBindingObserver {
       // second parameter for the resolution
       controller = CameraController(
         cameras![0],
-        ResolutionPreset.high,
+        ResolutionPreset.medium,
         enableAudio: false,
       );
 
