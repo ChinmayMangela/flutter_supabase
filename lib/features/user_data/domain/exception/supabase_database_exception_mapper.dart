@@ -8,6 +8,7 @@ import 'package:flutter_supabase/features/user_data/domain/exception/supabase_da
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseDatabaseExceptionMapper {
+  const SupabaseDatabaseExceptionMapper._();
   static SupabaseDatabaseException mapPostgresException(PostgrestException e) {
     debugPrint("Postgrest exception: ${e.message}, code: ${e.code}, details: ${e.details}");
 
