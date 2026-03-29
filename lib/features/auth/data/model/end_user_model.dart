@@ -8,6 +8,15 @@ class EndUserModel extends EndUser {
     required super.createdAt,
   });
 
+  factory EndUserModel.fromEntity(EndUser user) {
+    return EndUserModel(
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt,
+    );
+  }
+
   factory EndUserModel.fromJson(Map<String, dynamic> json) {
     return EndUserModel(
       id: json['id'],
