@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_supabase/features/ingredient_scanner/domain/entity/health_analysis.dart';
 
 class EndUser extends Equatable {
   final String id;
@@ -10,7 +11,7 @@ class EndUser extends Equatable {
     required this.id,
     required this.name,
     required this.email,
-    required this.createdAt
+    required this.createdAt,
   });
 
   @override
@@ -21,12 +22,13 @@ class EndUser extends Equatable {
     String? name,
     String? email,
     String? password,
+    List<HealthAnalysis>? previouslyScannedIngredients
   }) {
     return EndUser(
       id: this.id,
       name: name ?? this.name,
       email: email ?? this.email,
-      createdAt: createdAt
+      createdAt: createdAt,
     );
   }
 }

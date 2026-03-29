@@ -17,7 +17,7 @@ class NutritionCard extends StatelessWidget {
         color: AppColors.cardGrayColor,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start, 
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
