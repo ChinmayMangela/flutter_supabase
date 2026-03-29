@@ -10,4 +10,5 @@ abstract interface class EndUserRepository {
   Future<Either<Failure, void>> saveUser({required EndUser user});
   Future<Either<Failure, EndUser>> getUserData();
   Future<Either<Failure, List<HealthAnalysis>>> getPreviouslyScannedData({required String userId});
+  Future<Either<Failure, void>> saveScannedData({required HealthAnalysis healthAnalysis});
 }

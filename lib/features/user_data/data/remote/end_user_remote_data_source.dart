@@ -13,6 +13,8 @@ abstract interface class EndUserRemoteDataSource {
   Future<List<HealthAnalysisModel>> getPreviouslyScannedData({
     required String userId,
   });
+
+  Future<void> saveScannedData({required HealthAnalysisModel healthAnalysis});
 }
 
 class EndUserRemoteDataSourceImpl implements EndUserRemoteDataSource {
@@ -50,6 +52,18 @@ class EndUserRemoteDataSourceImpl implements EndUserRemoteDataSource {
           .eq('user_id', client.auth.currentUser!.id)
           .single();
       return EndUserModel.fromJson(data);
+    });
+  }
+
+  @override
+  Future<void> saveScannedData({
+    required HealthAnalysisModel healthAnalysis,
+  }) async {
+    return await _handleException(() async {
+      await client.from('health_analysis').insert({
+        ...healthAnalysis.toJson(),
+        'user_id': client.auth.currentUser!.id,
+      });
     });
   }
 

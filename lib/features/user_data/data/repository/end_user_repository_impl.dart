@@ -51,4 +51,12 @@ class EndUserRepositoryImpl implements EndUserRepository {
       return left(Failure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> saveScannedData({
+    required HealthAnalysis healthAnalysis
+}) {
+    // TODO: implement saveScannedData
+    throw UnimplementedError();
+  }
 }
