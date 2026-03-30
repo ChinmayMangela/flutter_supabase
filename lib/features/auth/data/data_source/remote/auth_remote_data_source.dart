@@ -81,6 +81,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw AppAuthException('Sign up failed', code: 'null-user');
       }
 
+
       return _mapToModel(user);
     });
   }
