@@ -39,5 +39,10 @@ class SaveScannedDataRequested extends UserDataEvent {
 
 
 class GetScannedHistoryRequested extends UserDataEvent {
-  const GetScannedHistoryRequested();
+  final String userId;
+
+  const GetScannedHistoryRequested({required this.userId});
+
+  @override
+  List<Object?> get props => [userId];
 }

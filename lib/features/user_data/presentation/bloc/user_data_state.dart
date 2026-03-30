@@ -37,4 +37,4 @@ class UserDataState extends Equatable {
   List<Object?> get props => [state, endUser, healthAnalysisHistory, errorMessage];
 }
 
-enum DataState { initial, loading, loaded, failure }
+enum DataState { initial, loading, success, failure }
