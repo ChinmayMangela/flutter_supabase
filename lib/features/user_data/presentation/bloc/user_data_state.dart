@@ -5,26 +5,26 @@ import 'package:flutter_supabase/features/ingredient_scanner/domain/entity/healt
 class UserDataState extends Equatable {
   final DataState state;
   final EndUser? endUser;
-  final HealthAnalysis? healthAnalysis;
+  final List<HealthAnalysis> healthAnalysisHistory;
   final String? errorMessage;
 
   const UserDataState({
     required this.state,
     this.endUser,
-    this.healthAnalysis,
+    this.healthAnalysisHistory = const [],
     this.errorMessage,
   });
 
   UserDataState copyWith({
     DataState? state,
     EndUser? endUser,
-    HealthAnalysis? healthAnalysis,
+    List<HealthAnalysis>? healthAnalysisHistory,
     String? errorMessage,
   }) {
     return UserDataState(
       state: state ?? this.state,
       endUser: endUser ?? this.endUser,
-      healthAnalysis: healthAnalysis ?? this.healthAnalysis,
+      healthAnalysisHistory: healthAnalysisHistory ?? this.healthAnalysisHistory,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
@@ -34,7 +34,7 @@ class UserDataState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [state, endUser, healthAnalysis, errorMessage];
+  List<Object?> get props => [state, endUser, healthAnalysisHistory, errorMessage];
 }
 
 enum DataState { initial, loading, loaded, failure }
