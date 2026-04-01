@@ -22,7 +22,6 @@ class EndUser extends Equatable {
     String? name,
     String? email,
     String? password,
-    List<HealthAnalysis>? previouslyScannedIngredients
   }) {
     return EndUser(
       id: this.id,

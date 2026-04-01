@@ -85,7 +85,7 @@ Return STRICT JSON in this structure:
       "primary_health_impact": "",
       "clinical_mechanism": "",
       "detailed_description": "",
-      "risk_level": ""
+      "risk_level": "" could be high, medium, low or unknown
     }
   ],
   "ai_deep_analysis": "",

@@ -40,13 +40,14 @@ class SafeJson {
 
 
   static RiskLevel fromString(dynamic value, {RiskLevel defaultValue = RiskLevel.unknown}) {
-    if(value == null) return defaultValue;
     if(value is String) {
       final v = value.toLowerCase().trim();
       if(v == 'low') return RiskLevel.low;
       if(v == 'medium') return RiskLevel.medium;
       if(v == 'high') return RiskLevel.high;
     }
+
+    if(value == null) return defaultValue;
     return defaultValue;
   }
 }

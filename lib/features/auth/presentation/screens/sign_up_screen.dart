@@ -4,6 +4,7 @@ import 'package:flutter_supabase/core/constants/app_colors.dart';
 import 'package:flutter_supabase/core/constants/app_strings.dart';
 import 'package:flutter_supabase/core/utils/dimen.dart';
 import 'package:flutter_supabase/core/utils/helper_functions.dart';
+import 'package:flutter_supabase/features/auth/domain/entity/end_user.dart';
 import 'package:flutter_supabase/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_supabase/features/auth/presentation/bloc/auth_event.dart';
 import 'package:flutter_supabase/features/auth/presentation/bloc/auth_state.dart';
@@ -12,6 +13,9 @@ import 'package:flutter_supabase/features/auth/presentation/widgets/auth_text_fi
 import 'package:flutter_supabase/features/auth/presentation/widgets/bottom_message.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/custom_description.dart';
 import 'package:flutter_supabase/features/auth/presentation/widgets/custom_heading.dart';
+import 'package:flutter_supabase/features/user_data/presentation/bloc/user_data_bloc.dart';
+import 'package:flutter_supabase/features/user_data/presentation/bloc/user_data_event.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key, required this.signInTap});
@@ -85,6 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final name = _nameController.text.trim();
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
+
       context.read<AuthBloc>().add(
         AuthSignUpRequested(name: name, email: email, password: password),
       );
@@ -96,6 +101,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
+          final user = state.endUser;
+          context.read<UserDataBloc>().add(
+            SaveUserRequested(endUser: user),
+          );
           Navigator.of(
             context,
           ).pushNamedAndRemoveUntil('/home', (route) => false);
@@ -204,15 +213,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildSignUpButton(AuthState state) {
     return AuthButton(
       onTap: _onSignUpTap,
-      child: state is AuthLoading ? SizedBox(height: 25, width: 25, child: CircularProgressIndicator(
-        color: AppColors.white,
-      ),) : Text(
-        AppStrings.auth.signUpLabel,
-        style: TextThemes(context).labelMedium.copyWith(
-          color: AppColors.white,
-          fontWeight: TextWeight.w500,
-        ),
-      ),
+      child: state is AuthLoading
+          ? SizedBox(
+              height: 25,
+              width: 25,
+              child: CircularProgressIndicator(color: AppColors.white),
+            )
+          : Text(
+              AppStrings.auth.signUpLabel,
+              style: TextThemes(context).labelMedium.copyWith(
+                color: AppColors.white,
+                fontWeight: TextWeight.w500,
+              ),
+            ),
     );
   }
 

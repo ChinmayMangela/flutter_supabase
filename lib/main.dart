@@ -12,6 +12,7 @@ import 'package:flutter_supabase/features/home/presentation/screens/home_screen.
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/bloc/ingredient_scanner_bloc.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/screens/ingredient_analysis_screen.dart';
 import 'package:flutter_supabase/features/ingredient_scanner/presentation/screens/ingredient_scanner_screen.dart';
+import 'package:flutter_supabase/features/user_data/presentation/bloc/user_data_bloc.dart';
 import 'package:flutter_supabase/init_dependencies.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
@@ -26,11 +27,23 @@ void main() async {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjbHlleXhtenZsb2h2Ymp1b3VjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MjQyOTIsImV4cCI6MjA4OTAwMDI5Mn0.qhZI7F4koZfJCODh_SlvpLhA0p1t_lWOQeJ6ictaYEM',
   );
   await initDependencies();
-  runApp(MultiBlocProvider(providers: [
-    BlocProvider(create: (context) => serviceLocator<AuthBloc>()..add(AuthStatusCheckRequested())),
-    BlocProvider(create: (context) => serviceLocator<IngredientScannerBloc>())
-  ], child: const MyApp()));
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              serviceLocator<AuthBloc>()..add(AuthStatusCheckRequested()),
+        ),
+        BlocProvider(
+          create: (context) => serviceLocator<IngredientScannerBloc>(),
+        ),
+        BlocProvider(create: (context) => serviceLocator<UserDataBloc>()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
+
 final navigatorKey = GlobalKey<NavigatorState>();
 final messengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -42,7 +55,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-
   @override
   void initState() {
     super.initState();
@@ -70,13 +82,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         navigatorKey: navigatorKey,
         scaffoldMessengerKey: messengerKey,
         theme: AppTheme.theme,
-        home: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-          if(state is AuthSuccess) {
-            return HomeScreen();
-          } else {
-            return SignInAndSignUp();
-          }
-        })
+        home: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, state) {
+            if (state is AuthSuccess) {
+              return HomeScreen();
+            } else {
+              return SignInAndSignUp();
+            }
+          },
+        ),
       ),
     );
   }
@@ -84,6 +98,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Map<String, WidgetBuilder> get _routes => {
     '/forgotPassword': (context) => ForgotPasswordScreen(),
     '/home': (context) => HomeScreen(),
-    '/ingredientScannerScreen': (context) => IngredientScannerScreen()
+    '/ingredientScannerScreen': (context) => IngredientScannerScreen(),
   };
 }

@@ -52,11 +52,13 @@ class RedFlagIngredientCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          ingredientName,
-          style: TextThemes(
-            context,
-          ).bodyLarge.copyWith(fontWeight: TextWeight.w500),
+        Expanded(
+          child: Text(
+            ingredientName,
+            style: TextThemes(
+              context,
+            ).bodyLarge.copyWith(fontWeight: TextWeight.w500),
+          ),
         ),
         Container(
           padding: const EdgeInsets.all(6),
